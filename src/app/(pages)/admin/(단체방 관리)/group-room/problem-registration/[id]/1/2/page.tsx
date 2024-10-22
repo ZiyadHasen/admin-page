@@ -1,15 +1,12 @@
 "use client";
 import CommonHeader from "@/components/CommonHeader";
 import DropDownWithLabel from "@/components/DropDownWithLabel";
-
-import redbg from "@/assets/redbg.png";
-import BlueAndBlackBtn from "@/components/blueAndBlackBtn";
-import InputWithLabelActive from "@/components/InputWithLabelActive";
-import { Input, Textarea } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
 import Image from "next/image";
+import Link from "next/link";
+import redbg from "@/assets/redbg.png";
 
-const CourseRegistrationDetailPage = () => {
-  // selection field
+const ProblemRegisterDetail = () => {
   const options = [
     { key: "1", label: "선택" },
     { key: "2", label: "일반회원" },
@@ -18,10 +15,9 @@ const CourseRegistrationDetailPage = () => {
   ];
   return (
     <div>
-      <CommonHeader title="코스 상세정보" />
-
+      <CommonHeader title="문제 상세정보" />
       <div className="mt-4 rounded-[20px] bg-mainWhite px-9 py-7">
-        <div className="mt-[20px] flex items-end justify-between">
+        <div className="my-6 flex items-center justify-between">
           <DropDownWithLabel
             title="언어"
             options={options}
@@ -32,20 +28,38 @@ const CourseRegistrationDetailPage = () => {
           <div className="w-[350px]"></div>
           <div className="w-[350px]"></div>
         </div>
-        <div className="mt-[20px] flex items-end justify-between">
-          <InputWithLabelActive
-            label="코스명"
-            type="text"
-            placeholder=""
-            inputStyles="w-[350px] h-[44px] placeholder:text-[#A1A9A3]"
-            defaultValue=""
+        <div className="my-6 flex items-center justify-between">
+          <DropDownWithLabel
+            title="코스명"
+            options={options}
+            defaultSelectedKeys="1"
+            titleStyles="  w-[90px]"
+            insideStyles=" w-[350px] h-[44px] "
           />
-          <InputWithLabelActive
-            label="코스 순번"
-            type="text"
-            placeholder=""
-            inputStyles="w-[350px] h-[44px] placeholder:text-[#A1A9A3]"
-            defaultValue=""
+          <DropDownWithLabel
+            title="경유지명"
+            options={options}
+            defaultSelectedKeys="1"
+            titleStyles="  w-[90px]"
+            insideStyles=" w-[350px] h-[44px] "
+          />
+
+          <div className="w-[350px]"></div>
+        </div>
+        <div className="my-6 flex items-center justify-between">
+          <DropDownWithLabel
+            title="문제 등급"
+            options={options}
+            defaultSelectedKeys="1"
+            titleStyles="  w-[90px]"
+            insideStyles=" w-[350px] h-[44px] "
+          />
+          <DropDownWithLabel
+            title="문제 유형"
+            options={options}
+            defaultSelectedKeys="1"
+            titleStyles="  w-[90px]"
+            insideStyles=" w-[350px] h-[44px] "
           />
 
           <div className="w-[350px]"></div>
@@ -53,7 +67,7 @@ const CourseRegistrationDetailPage = () => {
         <div className="mt-[20px] flex items-end justify-between">
           <div className="flex-grow">
             <h3 className="mb-2 text-nowrap text-sm font-bold text-mainGray">
-              코스 이미지
+              문제
             </h3>
             <div className="flex items-center gap-4">
               <button className="rounded-xl bg-[#A2ABAF] px-8 py-[8px] text-white">
@@ -82,7 +96,7 @@ const CourseRegistrationDetailPage = () => {
           <div className="w-[380px]"></div>
         </div>
         <div className="mt-[20px] flex items-end justify-between">
-          <div className="h-[210px] w-[770px] rounded-[12px] border border-[#DADFE2] p-[14px_24px]">
+          <div className="h-[210px] w-[750px] rounded-[12px] border border-[#DADFE2] p-[14px_24px]">
             <Image
               src={redbg}
               alt="Image"
@@ -90,41 +104,26 @@ const CourseRegistrationDetailPage = () => {
             />
           </div>
         </div>
-        <div className="w-full">
-          <h1 className="my-4 text-mainGray">코스 경로</h1>
-          <Textarea
-            key="bordered"
-            variant="bordered"
-            placeholder=""
-            height="590px"
-            classNames={{
-              input: "text-[15px] placeholder:text-mainGray ",
-            }}
-            minRows={4}
-          />
-        </div>
-        <div className="w-full">
-          <h1 className="my-4 text-mainGray">비고 </h1>
-          <Textarea
-            key="bordered"
-            variant="bordered"
-            placeholder=""
-            height="590px"
-            classNames={{
-              input: "text-[15px] placeholder:text-mainGray ",
-            }}
-            minRows={4}
-          />
-        </div>
       </div>
-      <div className="mt-8 flex justify-between">
+
+      <div className="mt-8 flex items-center justify-between">
         <button className="h-[50px] rounded-xl bg-[#A2ABAF] px-8 py-[14px] text-white">
           취소
         </button>
-        <BlueAndBlackBtn />
+        <div className="mt-5 flex gap-5">
+          <button className="h-[50px] rounded-xl bg-[#6D8EEB] px-8 py-[14px] text-white">
+            <Link href="/admin/group-room/problem-registration/1/1/1">
+              등록
+            </Link>
+          </button>
+          <button className="h-[50px] rounded-xl bg-[#424242] px-8 py-[14px] text-white">
+            삭제
+          </button>
+          <button className=""></button>
+        </div>
       </div>
     </div>
   );
 };
 
-export default CourseRegistrationDetailPage;
+export default ProblemRegisterDetail;

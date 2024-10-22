@@ -8,7 +8,7 @@ import InputWithLabelActive from "@/components/InputWithLabelActive";
 import { Input, Textarea } from "@nextui-org/react";
 import Image from "next/image";
 
-const CourseRegistrationDetailPage = () => {
+const TransitRegisterDetailPage = () => {
   // selection field
   const options = [
     { key: "1", label: "선택" },
@@ -18,7 +18,7 @@ const CourseRegistrationDetailPage = () => {
   ];
   return (
     <div>
-      <CommonHeader title="코스 상세정보" />
+      <CommonHeader title="경유지 상세정보" />
 
       <div className="mt-4 rounded-[20px] bg-mainWhite px-9 py-7">
         <div className="mt-[20px] flex items-end justify-between">
@@ -41,19 +41,41 @@ const CourseRegistrationDetailPage = () => {
             defaultValue=""
           />
           <InputWithLabelActive
-            label="코스 순번"
+            label="코스명"
             type="text"
             placeholder=""
             inputStyles="w-[350px] h-[44px] placeholder:text-[#A1A9A3]"
             defaultValue=""
           />
-
+          <InputWithLabelActive
+            label="경유지명"
+            type="text"
+            placeholder=""
+            inputStyles="w-[350px] h-[44px] placeholder:text-[#A1A9A3]"
+            defaultValue=""
+          />
+        </div>
+        <div className="mt-[20px] flex items-end justify-between">
+          <InputWithLabelActive
+            label="GPS정보(N)"
+            type="text"
+            placeholder=""
+            inputStyles="w-[350px] h-[44px] placeholder:text-[#A1A9A3]"
+            defaultValue=""
+          />
+          <InputWithLabelActive
+            label="GPS정보(N)"
+            type="text"
+            placeholder=""
+            inputStyles="w-[350px] h-[44px] placeholder:text-[#A1A9A3]"
+            defaultValue=""
+          />
           <div className="w-[350px]"></div>
         </div>
         <div className="mt-[20px] flex items-end justify-between">
           <div className="flex-grow">
             <h3 className="mb-2 text-nowrap text-sm font-bold text-mainGray">
-              코스 이미지
+              경유지 이미지
             </h3>
             <div className="flex items-center gap-4">
               <button className="rounded-xl bg-[#A2ABAF] px-8 py-[8px] text-white">
@@ -90,21 +112,9 @@ const CourseRegistrationDetailPage = () => {
             />
           </div>
         </div>
+
         <div className="w-full">
-          <h1 className="my-4 text-mainGray">코스 경로</h1>
-          <Textarea
-            key="bordered"
-            variant="bordered"
-            placeholder=""
-            height="590px"
-            classNames={{
-              input: "text-[15px] placeholder:text-mainGray ",
-            }}
-            minRows={4}
-          />
-        </div>
-        <div className="w-full">
-          <h1 className="my-4 text-mainGray">비고 </h1>
+          <h1 className="my-4 text-mainGray">관광정보 </h1>
           <Textarea
             key="bordered"
             variant="bordered"
@@ -127,4 +137,4 @@ const CourseRegistrationDetailPage = () => {
   );
 };
 
-export default CourseRegistrationDetailPage;
+export default TransitRegisterDetailPage;
