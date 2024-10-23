@@ -8,6 +8,8 @@ import memberActive from "@/assets/icons/sidebar/member-active.svg";
 import member from "@/assets/icons/sidebar/member.svg";
 import questionMark from "@/assets/icons/mainPart/questionMark.svg";
 import redbg from "@/assets/redbg.png";
+import rArrow from "@/assets/icons/rightArrow.svg";
+import lArrow from "@/assets/icons/leftArrow.svg";
 const assets = {
   member,
   memberActive,
@@ -18,7 +20,6 @@ const assets = {
   system,
   systemActive,
   questionMark,
-  redbg,
 };
 
 export default assets;

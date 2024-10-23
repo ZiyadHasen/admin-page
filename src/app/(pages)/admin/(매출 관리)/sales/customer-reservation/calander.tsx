@@ -1,48 +1,26 @@
 "use client";
 import React, { useState } from "react";
-import { Calendar, momentLocalizer, SlotInfo } from "react-big-calendar";
+import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import { Modal, Input, Button, Text } from "@nextui-org/react"; // Next UI components
+import "react-big-calendar/lib/css/react-big-calendar.css"; // Import the calendar styles
 
-// Import Korean locale
-import "moment/locale/ko";
+const localizer = momentLocalizer(moment); // Set moment as the localizer
 
-moment.locale("ko"); // Set moment to use Korean locale
-const localizer = momentLocalizer(moment);
-
-// Define the shape of the event object
-interface Event {
-  title: string;
-  start: Date;
-  end: Date;
-}
-
-const MyCalendar: React.FC = () => {
-  const [events, setEvents] = useState<Event[]>([]);
-  const [newEvent, setNewEvent] = useState<Event>({
-    title: "",
-    start: new Date(),
-    end: new Date(),
-  });
-  const [visible, setVisible] = useState<boolean>(false); // Modal visibility state
-
-  const handler = () => setVisible(true); // Open modal
-  const closeHandler = () => setVisible(false); // Close modal
-
-  const handleAddEvent = () => {
-    // Add new event to the list
-    setEvents([...events, { ...newEvent }]);
-    // Clear the event form and close modal
-    setNewEvent({ title: "", start: new Date(), end: new Date() });
-    setVisible(false);
-  };
-
-  const handleSelectSlot = (slotInfo: SlotInfo) => {
-    // Update new event's start and end dates from selected slot
-    setNewEvent({ ...newEvent, start: slotInfo.start, end: slotInfo.end });
-    handler(); // Open the modal
-  };
+const MyCalendar = () => {
+  const [events, setEvents] = useState([
+    {
+      title: "홍길동 10:00",
+      start: new Date(2024, 10, 1, 10, 0), // Nov 1, 2024, 10:00 AM
+      end: new Date(2024, 10, 1, 11, 0),
+      allDay: false,
+    },
+    {
+      title: "홍길동 10:00",
+      start: new Date(2024, 10, 2, 10, 0), // Nov 2, 2024, 10:00 AM
+      end: new Date(2024, 10, 2, 11, 0),
+      allDay: false,
+    },
+  ]);
 
   return (
     <div style={{ height: "80vh", padding: "20px" }}>
@@ -52,49 +30,16 @@ const MyCalendar: React.FC = () => {
         startAccessor="start"
         endAccessor="end"
         style={{ height: 500 }}
-        views={["month"]}
-        selectable
-        onSelectSlot={handleSelectSlot} // Trigger event when a slot is selected
-        // Korean day names and month formatting
-        formats={{
-          dayFormat: "ddd", // e.g., 월, 화, 수 (Short format for days in Korean)
-          weekdayFormat: (date, culture, localizer) =>
-            localizer.format(date, "dddd", culture), // Full day name format
+        views={["month"]} // Only show month view
+        popup // Show popup for events
+        defaultDate={new Date(2024, 10, 1)} // Set default month to November 2024
+        messages={{
+          next: "다음",
+          previous: "이전",
+          today: "오늘",
+          month: "월",
         }}
       />
-
-      {/* Next UI Modal for Event Input */}
-      <Modal
-        closeButton
-        aria-labelledby="modal-title"
-        open={visible}
-        onClose={closeHandler}
-      >
-        <Modal.Header>
-          <Text id="modal-title" size={18}>
-            Add New Event
-          </Text>
-        </Modal.Header>
-        <Modal.Body>
-          <Input
-            label="Event Title"
-            placeholder="Enter event title"
-            fullWidth
-            value={newEvent.title}
-            onChange={(e) =>
-              setNewEvent({ ...newEvent, title: e.target.value })
-            }
-          />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button auto flat color="error" onClick={closeHandler}>
-            Close
-          </Button>
-          <Button auto onClick={handleAddEvent}>
-            Add Event
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </div>
   );
 };
