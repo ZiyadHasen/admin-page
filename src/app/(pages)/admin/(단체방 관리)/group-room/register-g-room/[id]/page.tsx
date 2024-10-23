@@ -27,7 +27,7 @@ import DropDownWithLabel from "@/components/DropDownWithLabel";
 import InputWithLabel from "@/components/InputWithLabel";
 import { pages } from "next/dist/build/templates/app-page";
 import page from "../page";
-import row5Column52 from "@/data/tables/column3/row5column52";
+import modal from "@/data/tables/column3/modal";
 import React, { useState } from "react";
 
 const RegisterPageDetail = () => {
@@ -42,7 +42,7 @@ const RegisterPageDetail = () => {
 
   const rowsPerPage = 10;
 
-  const pages = Math.ceil(row5Column52.length / rowsPerPage);
+  const pages = Math.ceil(modal.length / rowsPerPage);
 
   const [currentData, setCurrentData] = useState<any>();
 
@@ -50,9 +50,15 @@ const RegisterPageDetail = () => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
 
-    setCurrentData(row5Column52.slice(start, end));
-    return row5Column52.slice(start, end);
-  }, [page, row5Column52, 5, rowsPerPage]);
+    setCurrentData(modal.slice(start, end));
+    return modal.slice(start, end);
+  }, [page, modal, 5, rowsPerPage]);
+
+  // Selection Logic
+  const [clickedRowIds, setClickedRowIds] = useState<number[]>([]);
+  const [allListCheckedPageNumbers, setAllListCheckedPageNumbers] = useState<
+    number[]
+  >([]);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
     <div>
@@ -351,28 +357,66 @@ const RegisterPageDetail = () => {
         </div>
       </div>
       <Button onPress={onOpen}>Open Modal</Button>
-      <Modal size="5xl" isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        size="5xl"
+        classNames={{
+          body: "h-[200px]",
+        }}
+      >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
-                Modal Title
-              </ModalHeader>
               <ModalBody>
+                <div className="mt-[20px] flex items-end justify-between">
+                  <InputWithLabel
+                    label="투어시작일"
+                    placeholder="입력"
+                    inputStyles="w-[300px] h-[44px]"
+                  />
+                  <InputWithLabel
+                    label="투어종료일"
+                    placeholder="입력"
+                    inputStyles="w-[300px] h-[44px]"
+                  />
+                  <InputWithLabel
+                    label="투어종료일"
+                    placeholder="입력"
+                    inputStyles="w-[300px] h-[30px]"
+                  />
+                </div>
+                <div className="mt-[5px] flex items-end justify-between">
+                  <InputWithLabel
+                    label="투어종료일"
+                    placeholder="입력"
+                    inputStyles="w-[300px] h-[30px]"
+                  />
+                  <InputWithLabel
+                    label="투어종료일"
+                    placeholder="입력"
+                    inputStyles="w-[300px] h-[30px]"
+                  />
+                  <button className="flex h-[44px] w-[300px] items-center justify-center rounded-xl bg-bgYellow px-4">
+                    <div className="text-center font-bold text-textYellow">
+                      조회
+                    </div>
+                  </button>
+                </div>
                 <article>
                   <Table
                     aria-label="Data Table"
                     shadow="none"
                     classNames={{
                       th: [
-                        "font-normal text-[16px] bg-[#EEEEEE] text-[#A1A9A3] h-[48px]  text-center ",
+                        "font-normal bg-[#EEEEEE] text-[#A1A9A3] text-center",
                       ],
                       td: [
-                        "px-6 py-3 text-center font-normal text-base text-[#363941]",
+                        "px-1 py-1 text-center font-normal text-base text-[#363941] overflow-hidden text-ellipsis whitespace-nowrap", // Ensure content fits within cells
                       ],
                     }}
                     bottomContent={
-                      <div className="mt-8 flex w-full justify-center">
+                      <div className="flex w-full justify-center">
                         <Pagination
                           isCompact
                           showControls
@@ -385,17 +429,71 @@ const RegisterPageDetail = () => {
                       </div>
                     }
                   >
-                    <TableHeader className="th-border-1">
+                    <TableHeader>
+                      <TableColumn className="flex items-center justify-center">
+                        <Checkbox
+                          onClick={() => {
+                            if (allListCheckedPageNumbers.includes(page)) {
+                              setAllListCheckedPageNumbers(
+                                allListCheckedPageNumbers.filter(
+                                  (number) => number !== page,
+                                ),
+                              );
+                              setClickedRowIds(
+                                clickedRowIds.filter(
+                                  (id) =>
+                                    !currentData
+                                      .map((item: any) => item.number)
+                                      .includes(id),
+                                ),
+                              );
+                            } else {
+                              setClickedRowIds([
+                                ...clickedRowIds,
+                                ...currentData.map((item: any) => item.number),
+                              ]);
+                              setAllListCheckedPageNumbers([
+                                ...allListCheckedPageNumbers,
+                                page,
+                              ]);
+                            }
+                          }}
+                          className={`mx-2 size-[14px] rounded-[2px] bg-transparent`}
+                          isSelected={allListCheckedPageNumbers.includes(page)}
+                        ></Checkbox>
+                      </TableColumn>
                       <TableColumn>No</TableColumn>
-                      <TableColumn>회원명</TableColumn>
-                      <TableColumn>현재코스</TableColumn>
-                      <TableColumn>현재 경유지</TableColumn>
+                      <TableColumn>이름(닉네임)</TableColumn>
                       <TableColumn>아이디(이메일)</TableColumn>
                       <TableColumn>휴대폰 번호</TableColumn>
+                      <TableColumn>가입일</TableColumn>
+                      <TableColumn>출생년도</TableColumn>
+                      <TableColumn>성별</TableColumn>
+                      <TableColumn>회원상태</TableColumn>
                     </TableHeader>
                     <TableBody>
                       {items.map((row) => (
-                        <TableRow key={row.id} className="border-b-1">
+                        <TableRow key={row.id}>
+                          <TableCell>
+                            <Checkbox
+                              className={`size-[14px] rounded-[2px] text-center`}
+                              onClick={() => {
+                                if (clickedRowIds.includes(row.number)) {
+                                  setClickedRowIds(
+                                    clickedRowIds.filter(
+                                      (id) => id !== row.number,
+                                    ),
+                                  );
+                                } else {
+                                  setClickedRowIds([
+                                    ...clickedRowIds,
+                                    row.number,
+                                  ]);
+                                }
+                              }}
+                              isSelected={clickedRowIds.includes(row.number)}
+                            ></Checkbox>
+                          </TableCell>
                           <TableCell>{row.No}</TableCell>
                           <TableCell className="overflow-hidden text-ellipsis whitespace-nowrap">
                             <Link
@@ -406,14 +504,20 @@ const RegisterPageDetail = () => {
                             </Link>
                           </TableCell>
                           <TableCell className="overflow-hidden text-ellipsis whitespace-nowrap">
-                            {row.currentCourse}
-                          </TableCell>
-                          <TableCell>{row.currentTransitPoint}</TableCell>
-                          <TableCell className="overflow-hidden text-ellipsis whitespace-nowrap">
                             {row.email}
                           </TableCell>
+                          <TableCell>{row.phoneNumber}</TableCell>
                           <TableCell className="overflow-hidden text-ellipsis whitespace-nowrap">
-                            {row.phoneNumber}
+                            {row.date}
+                          </TableCell>
+                          <TableCell className="overflow-hidden text-ellipsis whitespace-nowrap">
+                            {row.year}
+                          </TableCell>
+                          <TableCell className="overflow-hidden text-ellipsis whitespace-nowrap">
+                            {row.gender}
+                          </TableCell>
+                          <TableCell className="overflow-hidden text-ellipsis whitespace-nowrap">
+                            {row.status}
                           </TableCell>
                         </TableRow>
                       ))}
@@ -421,14 +525,7 @@ const RegisterPageDetail = () => {
                   </Table>
                 </article>
               </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
-                </Button>
-              </ModalFooter>
+              <ModalFooter></ModalFooter>
             </>
           )}
         </ModalContent>
